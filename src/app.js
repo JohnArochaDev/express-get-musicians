@@ -13,8 +13,4 @@ app.get('/musicians', async (req, res) => {
     res.json(musicians)
 })
 
-
-
-
-
 module.exports = app;
