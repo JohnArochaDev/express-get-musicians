@@ -29,6 +29,11 @@ describe('./musicians endpoint', () => {
     //     expect(dbData.includes(responseData[0])).toEqual(true)
     // })
 
+    test('expect status code 200', async () => {
+        const response = await request(app).get('/musicians/1')
+        expect(response.statusCode).toBe(200)
+    })
+
 
 
     
