@@ -1,5 +1,6 @@
 const express = require('express');
 const Musician = require('../models/Musician');
+const { check, validationResult } = require('express-validator')
 
 const musicianRoute = express.Router();
 
@@ -14,10 +15,19 @@ musicianRoute.get('/', async (req, res) => {
     res.status(200).json(musicians)
 })
 
-musicianRoute.post('/', async (req, res) => {
-    let newMusician = req.body
-    const musician = await Musician.create(newMusician)
-    res.status(201).json(musician)
+musicianRoute.post('/', [
+    check("name").not().isEmpty().trim(),
+    check("instrument").not().isEmpty().trim()
+], async (req, res) => {
+    const errors = validationResult(req)
+
+    if(!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    } else {
+        let newMusician = req.body
+        const musician = await Musician.create(newMusician)
+        res.status(201).json(musician)
+    }
 });
 
 musicianRoute.put('/:id', async (req, res) => {
